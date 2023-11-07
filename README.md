@@ -2,6 +2,14 @@
 
 A simple CLI to validate tendermint/cometbft p2p addresses, both for reachability and correct Node ID (ed25519 authentication)
 
+### Install
+
+```bash
+git clone https://github.com/strangelove-ventures/tmp2p.git
+cd tmp2p
+make install
+```
+
 ### Usage
 
 ``` bash
