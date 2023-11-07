@@ -1,6 +1,6 @@
 # tmp2p
 
-A simple CLI to validate tendermint/cometbft p2p addresses
+A simple CLI to validate tendermint/cometbft p2p addresses, both for reachability and correct Node ID (ed25519 authentication)
 
 ### Usage
 
