@@ -78,6 +78,14 @@ func validatePeers(peers string, limit int) {
 		peer := peer
 		go func() {
 			defer wg.Done()
+
+			peerAt := strings.Split(peer, "@")
+			skipIDValidation := false
+			if len(peerAt) == 1 {
+				peer = fmt.Sprintf("%s@%s", nodeKey.PubKey().Address(), peer)
+				skipIDValidation = true
+			}
+
 			netAddr, err := p2p.NewNetAddressString(peer)
 			if err != nil {
 				fmt.Printf("Invalid peer address: %s: %v\n", peer, err)
@@ -103,12 +111,18 @@ func validatePeers(peers string, limit int) {
 			// For outgoing conns, ensure connection key matches dialed key.
 			connID := p2p.PubKeyToID(secretConn.RemotePubKey())
 			if connID != netAddr.ID {
-				fmt.Printf(
-					"conn.ID (%v) dialed ID (%v) mismatch: %s\n",
-					connID,
-					netAddr.ID,
-					peer,
-				)
+
+				addValid(fmt.Sprintf("%s@%s", connID, strings.Split(peer, "@")[1]))
+
+				if !skipIDValidation {
+					fmt.Printf(
+						"conn.ID (%v) dialed ID (%v) mismatch: %s\n",
+						connID,
+						netAddr.ID,
+						peer,
+					)
+				}
+
 				return
 			}
 
